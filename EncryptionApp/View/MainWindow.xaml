@@ -136,16 +136,16 @@
                 Content="Открыть"/>
             <Button
                 Style="{StaticResource BaseButton}"
-                Command=""
+                Command="{Binding CreateKeys}"
                 Content="Создать ключи"/>
             <Button
                 Style="{StaticResource BaseButton}"
-                Command=""
+                Command="{Binding EncryptFile}"
                 Content="Зашифровать"/>
             <Button
                 Margin="0"
                 Style="{StaticResource BaseButton}"
-                Command=""
+                Command="{Binding DecryptFile}"
                 Content="Расшифровать"/>
         </StackPanel>
     </Grid>

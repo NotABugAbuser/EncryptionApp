@@ -14,8 +14,16 @@ namespace EncryptionApp.Model
         public virtual byte[] Decrypt(byte[] data, string firstKey, string secondKey) {
             throw new NotImplementedException();
         }
-        public virtual void CreateKeys() {
-            throw new NotImplementedException();
+        public virtual string[] CreateKeys() {
+            byte[] firstKeySequence = new byte[16];
+            byte[] secondKeySequence = new byte[16];
+            Random random = new Random();
+            random.NextBytes(firstKeySequence);
+            random.NextBytes(secondKeySequence);
+            return new string[] {
+                Convert.ToBase64String(firstKeySequence),
+                Convert.ToBase64String(secondKeySequence)
+            };
         }
     }
 }

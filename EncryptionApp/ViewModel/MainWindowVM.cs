@@ -49,31 +49,27 @@ namespace EncryptionApp.ViewModel
             SetMetaInfo("Ключ", "Вектор инициализации", "Симметричный", Visibility.Visible);
         }));
         public CustomCommand SetHashEncryption => setHashEncryption ?? (setHashEncryption = new CustomCommand(obj => {
-            TestMethod();
-
-            //currentEncryptor = new HashEncryption();
-            //SetMetaInfo("Ключ", "No name", "Хеширование", Visibility.Collapsed);
+            currentEncryptor = new HashEncryption();
+            SetMetaInfo("Ключ", "No name", "Хеширование", Visibility.Collapsed);
         }));
         public void TestMethod() {
-            byte[] key = new byte[16];
-            for (byte i = 0; i < 16; i++) {
-                key[i] = i;
-            }
-            Debug.WriteLine(JsonSerializer);
+        }
+        public void AnotherTestMethod(string key) {
         }
         public CustomCommand EncryptFile => encryptFile ?? (encryptFile = new CustomCommand(obj => {
-            if (!String.IsNullOrEmpty(currentFilePath)) {
-                byte[] data = File.ReadAllBytes(currentFilePath);
-                data = currentEncryptor.Encrypt(data, FirstKeySequence, SecondKeySequence);
-                File.WriteAllBytes(currentFilePath, data);
-            }
+            //if (!String.IsNullOrEmpty(currentFilePath)) {
+            //    byte[] data = File.ReadAllBytes(currentFilePath);
+            //    data = currentEncryptor.Encrypt(data, FirstKeySequence, SecondKeySequence);
+            //    File.WriteAllBytes(currentFilePath, data);
+            //}
         }));
         public CustomCommand DecryptFile => decryptFile ?? (decryptFile = new CustomCommand(obj => {
-            if (!String.IsNullOrEmpty(currentFilePath)) {
-                byte[] data = File.ReadAllBytes(currentFilePath);
-                data = currentEncryptor.Decrypt(data, FirstKeySequence, SecondKeySequence);
-                File.WriteAllBytes(currentFilePath, data);
-            }
+            AnotherTestMethod(FirstKeySequence);
+            //if (!String.IsNullOrEmpty(currentFilePath)) {
+            //    byte[] data = File.ReadAllBytes(currentFilePath);
+            //    data = currentEncryptor.Decrypt(data, FirstKeySequence, SecondKeySequence);
+            //    File.WriteAllBytes(currentFilePath, data);
+            //}
         }));
         public CustomCommand OpenFile => openFile ?? (openFile = new CustomCommand(obj => {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -84,7 +80,9 @@ namespace EncryptionApp.ViewModel
             }
         }));
         public CustomCommand CreateKeys => createKeys ?? (createKeys = new CustomCommand(obj => {
-
+            string[] keys = currentEncryptor.CreateKeys();
+            FirstKeySequence = keys[0];
+            SecondKeySequence = keys[1];
         }));
         public string CurrentFileName {
             get => currentFileName;
