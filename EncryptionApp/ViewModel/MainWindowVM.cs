@@ -18,7 +18,7 @@ namespace EncryptionApp.ViewModel
 {
     class MainWindowVM : INotifyPropertyChanged
     {
-        private Encryption currentEncryptor = new HashEncryption();
+        private Encryption currentEncryptor = new SymmetricEncryption();
         private string firstKeySequenceName = "Ключ";
         private string firstKeySequence = "";
         private string secondKeySequenceName = "Вектор инициализации";
@@ -80,10 +80,15 @@ namespace EncryptionApp.ViewModel
             }
         }));
         public CustomCommand CreateKeys => createKeys ?? (createKeys = new CustomCommand(obj => {
+            CreateKeysMethod();
+        }));
+
+        private void CreateKeysMethod() {
             string[] keys = currentEncryptor.CreateKeys();
             FirstKeySequence = keys[0];
             SecondKeySequence = keys[1];
-        }));
+        }
+
         public string CurrentFileName {
             get => currentFileName;
             set {
