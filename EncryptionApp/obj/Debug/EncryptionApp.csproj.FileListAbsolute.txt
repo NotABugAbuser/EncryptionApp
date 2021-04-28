@@ -33,3 +33,4 @@ C:\Users\Gvozd\source\repos\EncryptionApp\EncryptionApp\obj\Debug\EncryptionApp.
 C:\Users\Gvozd\source\repos\EncryptionApp\EncryptionApp\obj\Debug\EncryptionApp.exe
 C:\Users\Gvozd\source\repos\EncryptionApp\EncryptionApp\obj\Debug\EncryptionApp.pdb
 C:\Users\Gvozd\source\repos\EncryptionApp\EncryptionApp\obj\Debug\EncryptionApp.csprojAssemblyReference.cache
+C:\Users\Gvozd\source\repos\EncryptionApp\EncryptionApp\bin\Debug\BouncyCastle.Crypto.dll

@@ -95,17 +95,19 @@
             VerticalAlignment="Bottom"
             Grid.Row="1">
             <TextBlock
+                Visibility="{Binding KeyVisibilities}"
                 Style="{StaticResource Header}"
                 Text="{Binding FirstKeySequenceName}"/>
             <TextBox
+                Visibility="{Binding KeyVisibilities}"
                 Style="{StaticResource KeyText}"
                 Text="{Binding FirstKeySequence, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBlock
-                Visibility="{Binding SecondKeyVisibility}"
+                Visibility="{Binding KeyVisibilities}"
                 Style="{StaticResource Header}"
                 Text="{Binding SecondKeySequenceName}"/>
             <TextBox
-                Visibility="{Binding SecondKeyVisibility}"
+                Visibility="{Binding KeyVisibilities}"
                 Style="{StaticResource KeyText}"
                 Text="{Binding SecondKeySequence, UpdateSourceTrigger=PropertyChanged}"/>
         </StackPanel>
@@ -123,7 +125,7 @@
                 Command="{Binding SetAsymmetricEncryption}"/>
             <Button
                 Style="{StaticResource BaseButton}"
-                Content="Хеширование (MD5)"
+                Content="Необратимый (MD5)"
                 Command="{Binding SetHashEncryption}"/>
         </StackPanel>
         <StackPanel
@@ -135,6 +137,7 @@
                 Command="{Binding OpenFile}"
                 Content="Открыть"/>
             <Button
+                Visibility="{Binding KeyVisibilities}"
                 Style="{StaticResource BaseButton}"
                 Command="{Binding CreateKeys}"
                 Content="Создать ключи"/>

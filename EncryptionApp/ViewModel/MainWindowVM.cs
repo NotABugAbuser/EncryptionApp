@@ -19,7 +19,7 @@ namespace EncryptionApp.ViewModel
 {
     class MainWindowVM : INotifyPropertyChanged
     {
-        private Encryption currentEncryptor = new SymmetricEncryption();
+        private Encryption currentEncryptor = new HashEncryption();
         private string firstKeySequenceName = "Ключ";
         private string firstKeySequence = "";
         private string secondKeySequenceName = "Вектор инициализации";
@@ -27,7 +27,7 @@ namespace EncryptionApp.ViewModel
         private string currentFilePath = "";
         private string currentFileName = "Не выбран";
         private string currentEncryptionMethod = "Симметричный";
-        private Visibility secondKeyVisibility = Visibility.Visible;
+        private Visibility keyVisibilities = Visibility.Visible;
         private CustomCommand encryptFile;
         private CustomCommand decryptFile;
         private CustomCommand openFile;
@@ -35,11 +35,11 @@ namespace EncryptionApp.ViewModel
         private CustomCommand setAsymmetricEncryption;
         private CustomCommand setSymmetricEncryption;
         private CustomCommand setHashEncryption;
-        private void SetMetaInfo(string firstKeySequenceName, string secondKeySequenceName, string currentEncryptionMethod, Visibility secondKeyVisibility) {
-            FirstKeySequenceName = firstKeySequenceName;
-            SecondKeySequenceName = secondKeySequenceName;
-            CurrentEncryptionMethod = currentEncryptionMethod;
-            SecondKeyVisibility = secondKeyVisibility;
+        private void SetMetaInfo(string firstKeySequenceName, string secondKeySequenceName, string currentEncryptionMethod, Visibility keyVisibilities) {
+            this.FirstKeySequenceName = firstKeySequenceName;
+            this.SecondKeySequenceName = secondKeySequenceName;
+            this.CurrentEncryptionMethod = currentEncryptionMethod;
+            this.KeyVisibilities = keyVisibilities;
         }
         public CustomCommand SetAsymmetricEncryption => setAsymmetricEncryption ?? (setAsymmetricEncryption = new CustomCommand(obj => {
             currentEncryptor = new AsymmetricEncryption();
@@ -51,15 +51,9 @@ namespace EncryptionApp.ViewModel
         }));
         public CustomCommand SetHashEncryption => setHashEncryption ?? (setHashEncryption = new CustomCommand(obj => {
             currentEncryptor = new HashEncryption();
-            SetMetaInfo("Ключ", "No name", "Хеширование", Visibility.Collapsed);
+            SetMetaInfo("Ключ", "No name", "Необратимый", Visibility.Collapsed);
         }));
         public void TestMethod() {
-            RSACryptoServiceProvider rsa = new RSACryptoServiceProvider(512);
-            rsa.ExportParameters(true);
-            byte[] publicKey = rsa.ExportCspBlob(false);
-            byte[] privateKey = rsa.ExportCspBlob(true);
-            Debug.WriteLine(Convert.ToBase64String(publicKey));
-            Debug.WriteLine(Convert.ToBase64String(privateKey));
 
         }
         public CustomCommand EncryptFile => encryptFile ?? (encryptFile = new CustomCommand(obj => {
@@ -139,10 +133,12 @@ namespace EncryptionApp.ViewModel
             }
         }
 
-        public Visibility SecondKeyVisibility {
-            get => secondKeyVisibility;
+      
+
+        public Visibility KeyVisibilities {
+            get => keyVisibilities;
             set {
-                secondKeyVisibility = value;
+                keyVisibilities = value;
                 OnPropertyChanged();
             }
         }
