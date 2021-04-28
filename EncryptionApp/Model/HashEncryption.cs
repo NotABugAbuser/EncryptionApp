@@ -9,12 +9,11 @@ namespace EncryptionApp.Model
 {
     class HashEncryption : Encryption
     {
-        public override byte[] Encrypt(byte[] data) {
+        public override byte[] Encrypt(byte[] data, string key, string _) {
             throw new NotImplementedException();
         }
-        public override byte[] Decrypt(byte[] data) {
-            MessageBox.Show("Расшифровать хеш-сумму невозможно");
-            return data;
+        public override byte[] Decrypt(byte[] data, string key, string _) {
+            throw new NotImplementedException();
         }
     }
 }

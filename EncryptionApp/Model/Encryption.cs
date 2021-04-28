@@ -8,10 +8,10 @@ namespace EncryptionApp.Model
 {
     class Encryption
     {
-        public virtual byte[] Encrypt(byte[] data) {
+        public virtual byte[] Encrypt(byte[] data, string firstKey, string secondKey) {
             throw new NotImplementedException();
         }
-        public virtual byte[] Decrypt(byte[] data) {
+        public virtual byte[] Decrypt(byte[] data, string firstKey, string secondKey) {
             throw new NotImplementedException();
         }
         public virtual void CreateKeys() {

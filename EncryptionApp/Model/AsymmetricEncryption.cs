@@ -8,10 +8,10 @@ namespace EncryptionApp.Model
 {
     class AsymmetricEncryption : Encryption
     {
-        public override byte[] Encrypt(byte[] data) {
+        public override byte[] Encrypt(byte[] data, string publicKey, string privateKey) {
             throw new NotImplementedException();
         }
-        public override byte[] Decrypt(byte[] data) {
+        public override byte[] Decrypt(byte[] data, string publicKey, string privateKey) {
             throw new NotImplementedException();
         }
     }

@@ -8,10 +8,10 @@ namespace EncryptionApp.Model
 {
     class SymmetricEncryption : Encryption
     {
-        public override byte[] Encrypt(byte[] data) {
+        public override byte[] Encrypt(byte[] data, string key, string iv) {
             throw new NotImplementedException();
         }
-        public override byte[] Decrypt(byte[] data) {
+        public override byte[] Decrypt(byte[] data, string key, string iv) {
             throw new NotImplementedException();
         }
     }

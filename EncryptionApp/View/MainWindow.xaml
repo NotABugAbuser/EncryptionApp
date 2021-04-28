@@ -101,9 +101,11 @@
                 Style="{StaticResource KeyText}"
                 Text="{Binding FirstKeySequence, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBlock
+                Visibility="{Binding SecondKeyVisibility}"
                 Style="{StaticResource Header}"
                 Text="{Binding SecondKeySequenceName}"/>
             <TextBox
+                Visibility="{Binding SecondKeyVisibility}"
                 Style="{StaticResource KeyText}"
                 Text="{Binding SecondKeySequence, UpdateSourceTrigger=PropertyChanged}"/>
         </StackPanel>

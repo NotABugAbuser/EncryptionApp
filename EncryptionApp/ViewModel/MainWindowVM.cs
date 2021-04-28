@@ -10,7 +10,9 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace EncryptionApp.ViewModel
 {
@@ -24,6 +26,7 @@ namespace EncryptionApp.ViewModel
         private string currentFilePath = "";
         private string currentFileName = "Не выбран";
         private string currentEncryptionMethod = "Симметричный";
+        private Visibility secondKeyVisibility = Visibility.Visible;
         private CustomCommand encryptFile;
         private CustomCommand decryptFile;
         private CustomCommand openFile;
@@ -31,32 +34,46 @@ namespace EncryptionApp.ViewModel
         private CustomCommand setAsymmetricEncryption;
         private CustomCommand setSymmetricEncryption;
         private CustomCommand setHashEncryption;
-        private void SetMetaInfo(string firstKeySequenceName, string secondKeySequenceName, string currentEncryptionMethod) {
+        private void SetMetaInfo(string firstKeySequenceName, string secondKeySequenceName, string currentEncryptionMethod, Visibility secondKeyVisibility) {
             FirstKeySequenceName = firstKeySequenceName;
             SecondKeySequenceName = secondKeySequenceName;
             CurrentEncryptionMethod = currentEncryptionMethod;
+            SecondKeyVisibility = secondKeyVisibility;
         }
         public CustomCommand SetAsymmetricEncryption => setAsymmetricEncryption ?? (setAsymmetricEncryption = new CustomCommand(obj => {
             currentEncryptor = new AsymmetricEncryption();
-            SetMetaInfo("Открытый ключ", "Закрытый ключ", "Асимметричный");
+            SetMetaInfo("Открытый ключ", "Закрытый ключ", "Асимметричный", Visibility.Visible);
         }));
         public CustomCommand SetSymmetricEncryption => setSymmetricEncryption ?? (setSymmetricEncryption = new CustomCommand(obj => {
             currentEncryptor = new SymmetricEncryption();
-            SetMetaInfo("Ключ", "Вектор инициализации", "Симметричный");
+            SetMetaInfo("Ключ", "Вектор инициализации", "Симметричный", Visibility.Visible);
         }));
         public CustomCommand SetHashEncryption => setHashEncryption ?? (setHashEncryption = new CustomCommand(obj => {
-            currentEncryptor = new HashEncryption();
-            SetMetaInfo("No name", "No name", "Хеширование");
+            TestMethod();
+
+            //currentEncryptor = new HashEncryption();
+            //SetMetaInfo("Ключ", "No name", "Хеширование", Visibility.Collapsed);
         }));
+        public void TestMethod() {
+            byte[] key = new byte[16];
+            for (byte i = 0; i < 16; i++) {
+                key[i] = i;
+            }
+            Debug.WriteLine(JsonSerializer);
+        }
         public CustomCommand EncryptFile => encryptFile ?? (encryptFile = new CustomCommand(obj => {
-            byte[] data = File.ReadAllBytes(currentFilePath);
-            data = currentEncryptor.Encrypt(data);
-            File.WriteAllBytes(currentFilePath, data);
+            if (!String.IsNullOrEmpty(currentFilePath)) {
+                byte[] data = File.ReadAllBytes(currentFilePath);
+                data = currentEncryptor.Encrypt(data, FirstKeySequence, SecondKeySequence);
+                File.WriteAllBytes(currentFilePath, data);
+            }
         }));
         public CustomCommand DecryptFile => decryptFile ?? (decryptFile = new CustomCommand(obj => {
-            byte[] data = File.ReadAllBytes(currentFilePath);
-            data = currentEncryptor.Decrypt(data);
-            File.WriteAllBytes(currentFilePath, data);
+            if (!String.IsNullOrEmpty(currentFilePath)) {
+                byte[] data = File.ReadAllBytes(currentFilePath);
+                data = currentEncryptor.Decrypt(data, FirstKeySequence, SecondKeySequence);
+                File.WriteAllBytes(currentFilePath, data);
+            }
         }));
         public CustomCommand OpenFile => openFile ?? (openFile = new CustomCommand(obj => {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -109,6 +126,14 @@ namespace EncryptionApp.ViewModel
             get => currentEncryptionMethod;
             set {
                 currentEncryptionMethod = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility SecondKeyVisibility {
+            get => secondKeyVisibility;
+            set {
+                secondKeyVisibility = value;
                 OnPropertyChanged();
             }
         }
