@@ -7,7 +7,7 @@
         xmlns:vm="clr-namespace:EncryptionApp.ViewModel"
         mc:Ignorable="d"
         Background="#252526"
-        Title="MainWindow" Height="500" Width="1000">
+        Title="MainWindow" Height="500" Width="800">
     <Window.Resources>
         <SolidColorBrush Color="#252526" x:Key="PrimaryBackground"/>
         <SolidColorBrush Color="#2d2d30" x:Key="SecondaryBackground"/>
@@ -50,12 +50,14 @@
         <Style TargetType="TextBox" x:Key="KeyText">
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="BorderBrush" Value="{StaticResource BorderGray}"/>
-            <Setter Property="Foreground" Value="#ccc"/>
+            <Setter Property="Foreground" Value="#bbb"/>
             <Setter Property="Background" Value="{StaticResource PrimaryBackground}"/>
             <Setter Property="Height" Value="40"/>
+            <Setter Property="Padding" Value="10,6,0,0"/>
             <Setter Property="FontSize" Value="20"/>
         </Style>
         <Style TargetType="TextBlock" x:Key="Header">
+            <Setter Property="Margin" Value="0,20,0,3"/>
             <Setter Property="Foreground" Value="#eee"/>
             <Setter Property="FontSize" Value="20"/>
         </Style>
@@ -77,18 +79,30 @@
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
         <StackPanel
+            Grid.Row="1"
+            VerticalAlignment="Top"
+            Grid.Column="1">
+            <TextBlock
+                Margin="0,0,0,3"
+                Style="{StaticResource Header}"
+                Text="{Binding StringFormat=Текущий файл: {0}, Path=CurrentFileName}"/>
+            <TextBlock
+                Style="{StaticResource Header}"
+                Text="{Binding StringFormat=Текущий метод шифрования: {0}, Path=CurrentEncryptionMethod}"/>
+        </StackPanel>
+        <StackPanel
             Grid.Column="1"
             VerticalAlignment="Bottom"
             Grid.Row="1">
             <TextBlock
                 Style="{StaticResource Header}"
-                Text="Открытый ключ"/>
+                Text="{Binding FirstKeySequenceName}"/>
             <TextBox
                 Style="{StaticResource KeyText}"
                 Text="{Binding FirstKeySequence, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBlock
                 Style="{StaticResource Header}"
-                Text="Закрытый ключ"/>
+                Text="{Binding SecondKeySequenceName}"/>
             <TextBox
                 Style="{StaticResource KeyText}"
                 Text="{Binding SecondKeySequence, UpdateSourceTrigger=PropertyChanged}"/>
@@ -99,7 +113,7 @@
             Grid.Row="1">
             <Button
                 Style="{StaticResource BaseButton}"
-                Content="Симметричный (AES)"
+                Content="Симметричный (AES128)"
                 Command="{Binding SetSymmetricEncryption}"/>
             <Button
                 Style="{StaticResource BaseButton}"
@@ -107,7 +121,7 @@
                 Command="{Binding SetAsymmetricEncryption}"/>
             <Button
                 Style="{StaticResource BaseButton}"
-                Content="Хеширование"
+                Content="Хеширование (MD5)"
                 Command="{Binding SetHashEncryption}"/>
         </StackPanel>
         <StackPanel

@@ -16,25 +16,37 @@ namespace EncryptionApp.ViewModel
 {
     class MainWindowVM : INotifyPropertyChanged
     {
-        private Encryption currentEncryptor = new HashEncryption();
+        private Encryption currentEncryptor = new SymmetricEncryption();
+        private string firstKeySequenceName = "Ключ";
         private string firstKeySequence = "";
+        private string secondKeySequenceName = "Вектор инициализации";
         private string secondKeySequence = "";
         private string currentFilePath = "";
-        private string currentFileName = "";
+        private string currentFileName = "Не выбран";
+        private string currentEncryptionMethod = "Симметричный";
         private CustomCommand encryptFile;
         private CustomCommand decryptFile;
         private CustomCommand openFile;
+        private CustomCommand createKeys;
         private CustomCommand setAsymmetricEncryption;
         private CustomCommand setSymmetricEncryption;
         private CustomCommand setHashEncryption;
+        private void SetMetaInfo(string firstKeySequenceName, string secondKeySequenceName, string currentEncryptionMethod) {
+            FirstKeySequenceName = firstKeySequenceName;
+            SecondKeySequenceName = secondKeySequenceName;
+            CurrentEncryptionMethod = currentEncryptionMethod;
+        }
         public CustomCommand SetAsymmetricEncryption => setAsymmetricEncryption ?? (setAsymmetricEncryption = new CustomCommand(obj => {
             currentEncryptor = new AsymmetricEncryption();
+            SetMetaInfo("Открытый ключ", "Закрытый ключ", "Асимметричный");
         }));
         public CustomCommand SetSymmetricEncryption => setSymmetricEncryption ?? (setSymmetricEncryption = new CustomCommand(obj => {
             currentEncryptor = new SymmetricEncryption();
+            SetMetaInfo("Ключ", "Вектор инициализации", "Симметричный");
         }));
         public CustomCommand SetHashEncryption => setHashEncryption ?? (setHashEncryption = new CustomCommand(obj => {
             currentEncryptor = new HashEncryption();
+            SetMetaInfo("No name", "No name", "Хеширование");
         }));
         public CustomCommand EncryptFile => encryptFile ?? (encryptFile = new CustomCommand(obj => {
             byte[] data = File.ReadAllBytes(currentFilePath);
@@ -54,7 +66,9 @@ namespace EncryptionApp.ViewModel
                 currentFilePath = openFileDialog.FileName;
             }
         }));
-        
+        public CustomCommand CreateKeys => createKeys ?? (createKeys = new CustomCommand(obj => {
+
+        }));
         public string CurrentFileName {
             get => currentFileName;
             set {
@@ -73,6 +87,28 @@ namespace EncryptionApp.ViewModel
             get => secondKeySequence;
             set {
                 secondKeySequence = value;
+                OnPropertyChanged();
+            }
+        }
+        public string FirstKeySequenceName {
+            get => firstKeySequenceName;
+            set {
+                firstKeySequenceName = value;
+                OnPropertyChanged();
+            }
+        }
+        public string SecondKeySequenceName {
+            get => secondKeySequenceName;
+            set {
+                secondKeySequenceName = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string CurrentEncryptionMethod {
+            get => currentEncryptionMethod;
+            set {
+                currentEncryptionMethod = value;
                 OnPropertyChanged();
             }
         }
