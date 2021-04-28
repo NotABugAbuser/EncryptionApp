@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EncryptionApp"
+        xmlns:vm="clr-namespace:EncryptionApp.ViewModel"
         mc:Ignorable="d"
         Background="#252526"
         Title="MainWindow" Height="600" Width="1000">
@@ -47,6 +48,9 @@
             </Style.Triggers>
         </Style>
     </Window.Resources>
+    <Window.DataContext>
+        <vm:MainWindowVM/>
+    </Window.DataContext>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="30"/>
@@ -67,7 +71,8 @@
             <Button
                 Style="{StaticResource BaseButton}"
                 Content="Симметричный (AES)"
-                Command=""/>
+                CommandParameter="SymmetricEncryption"
+                Command="{Binding SetCurrentEncryptor}"/>
             <Button
                 Style="{StaticResource BaseButton}"
                 Content="Асимметричный (RSA)"
@@ -83,7 +88,7 @@
             Grid.Row="1">
             <Button
                 Style="{StaticResource BaseButton}"
-                Command=""
+                Command="{Binding OpenFile}"
                 Content="Открыть"/>
             <Button
                 Style="{StaticResource BaseButton}"

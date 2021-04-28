@@ -10,6 +10,12 @@ namespace EncryptionApp.Model
     {
         public virtual byte[] Encrypt(byte[] data) {
             throw new NotImplementedException();
-        } 
+        }
+        public virtual byte[] Decrypt(byte[] data) {
+            throw new NotImplementedException();
+        }
+        public virtual void CreateKeys() {
+            throw new NotImplementedException();
+        }
     }
 }
