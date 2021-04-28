@@ -7,7 +7,7 @@
         xmlns:vm="clr-namespace:EncryptionApp.ViewModel"
         mc:Ignorable="d"
         Background="#252526"
-        Title="MainWindow" Height="600" Width="1000">
+        Title="MainWindow" Height="500" Width="1000">
     <Window.Resources>
         <SolidColorBrush Color="#252526" x:Key="PrimaryBackground"/>
         <SolidColorBrush Color="#2d2d30" x:Key="SecondaryBackground"/>
@@ -47,6 +47,18 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <Style TargetType="TextBox" x:Key="KeyText">
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderGray}"/>
+            <Setter Property="Foreground" Value="#ccc"/>
+            <Setter Property="Background" Value="{StaticResource PrimaryBackground}"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="FontSize" Value="20"/>
+        </Style>
+        <Style TargetType="TextBlock" x:Key="Header">
+            <Setter Property="Foreground" Value="#eee"/>
+            <Setter Property="FontSize" Value="20"/>
+        </Style>
     </Window.Resources>
     <Window.DataContext>
         <vm:MainWindowVM/>
@@ -65,22 +77,38 @@
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
         <StackPanel
+            Grid.Column="1"
+            VerticalAlignment="Bottom"
+            Grid.Row="1">
+            <TextBlock
+                Style="{StaticResource Header}"
+                Text="Открытый ключ"/>
+            <TextBox
+                Style="{StaticResource KeyText}"
+                Text="{Binding FirstKeySequence, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBlock
+                Style="{StaticResource Header}"
+                Text="Закрытый ключ"/>
+            <TextBox
+                Style="{StaticResource KeyText}"
+                Text="{Binding SecondKeySequence, UpdateSourceTrigger=PropertyChanged}"/>
+        </StackPanel>
+        <StackPanel
             VerticalAlignment="Top"
             Grid.Column="3"
             Grid.Row="1">
             <Button
                 Style="{StaticResource BaseButton}"
                 Content="Симметричный (AES)"
-                CommandParameter="SymmetricEncryption"
-                Command="{Binding SetCurrentEncryptor}"/>
+                Command="{Binding SetSymmetricEncryption}"/>
             <Button
                 Style="{StaticResource BaseButton}"
                 Content="Асимметричный (RSA)"
-                Command=""/>
+                Command="{Binding SetAsymmetricEncryption}"/>
             <Button
                 Style="{StaticResource BaseButton}"
                 Content="Хеширование"
-                Command=""/>
+                Command="{Binding SetHashEncryption}"/>
         </StackPanel>
         <StackPanel
             VerticalAlignment="Bottom"

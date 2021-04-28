@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -20,18 +21,12 @@ namespace EncryptionApp.ViewModel
         private string secondKeySequence = "";
         private string currentFilePath = "";
         private string currentFileName = "";
-        private CustomCommand setCurrentEncryptor;
         private CustomCommand encryptFile;
         private CustomCommand decryptFile;
         private CustomCommand openFile;
         private CustomCommand setAsymmetricEncryption;
         private CustomCommand setSymmetricEncryption;
         private CustomCommand setHashEncryption;
-        public CustomCommand SetCurrentEncryptor => setCurrentEncryptor ?? (setCurrentEncryptor = new CustomCommand(obj => {
-            Type type = Type.GetType((string)obj);
-            currentEncryptor = (Encryption)Activator.CreateInstance(type);
-            Debug.WriteLine(currentEncryptor is HashEncryption);
-        }));
         public CustomCommand SetAsymmetricEncryption => setAsymmetricEncryption ?? (setAsymmetricEncryption = new CustomCommand(obj => {
             currentEncryptor = new AsymmetricEncryption();
         }));
@@ -42,10 +37,14 @@ namespace EncryptionApp.ViewModel
             currentEncryptor = new HashEncryption();
         }));
         public CustomCommand EncryptFile => encryptFile ?? (encryptFile = new CustomCommand(obj => {
-        
+            byte[] data = File.ReadAllBytes(currentFilePath);
+            data = currentEncryptor.Encrypt(data);
+            File.WriteAllBytes(currentFilePath, data);
         }));
         public CustomCommand DecryptFile => decryptFile ?? (decryptFile = new CustomCommand(obj => {
-
+            byte[] data = File.ReadAllBytes(currentFilePath);
+            data = currentEncryptor.Decrypt(data);
+            File.WriteAllBytes(currentFilePath, data);
         }));
         public CustomCommand OpenFile => openFile ?? (openFile = new CustomCommand(obj => {
             OpenFileDialog openFileDialog = new OpenFileDialog();
