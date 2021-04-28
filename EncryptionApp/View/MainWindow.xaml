@@ -52,7 +52,7 @@
             <Setter Property="BorderBrush" Value="{StaticResource BorderGray}"/>
             <Setter Property="Foreground" Value="#bbb"/>
             <Setter Property="Background" Value="{StaticResource PrimaryBackground}"/>
-            <Setter Property="Height" Value="40"/>
+            <Setter Property="Height" Value="85"/>
             <Setter Property="Padding" Value="10,6,0,0"/>
             <Setter Property="FontSize" Value="20"/>
         </Style>
@@ -70,7 +70,7 @@
             <ColumnDefinition Width="30"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="30"/>
-            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="210"/>
             <ColumnDefinition Width="30"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -109,6 +109,8 @@
             <TextBox
                 Visibility="{Binding KeyVisibilities}"
                 Style="{StaticResource KeyText}"
+                TextWrapping="wrap"
+                AcceptsReturn="True"
                 Text="{Binding SecondKeySequence, UpdateSourceTrigger=PropertyChanged}"/>
         </StackPanel>
         <StackPanel
@@ -121,7 +123,7 @@
                 Command="{Binding SetSymmetricEncryption}"/>
             <Button
                 Style="{StaticResource BaseButton}"
-                Content="Асимметричный (RSA)"
+                Content="Асимметричный (RSA2048)"
                 Command="{Binding SetAsymmetricEncryption}"/>
             <Button
                 Style="{StaticResource BaseButton}"

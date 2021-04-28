@@ -19,7 +19,7 @@ namespace EncryptionApp.ViewModel
 {
     class MainWindowVM : INotifyPropertyChanged
     {
-        private Encryption currentEncryptor = new HashEncryption();
+        private Encryption currentEncryptor = new SymmetricEncryption();
         private string firstKeySequenceName = "Ключ";
         private string firstKeySequence = "";
         private string secondKeySequenceName = "Вектор инициализации";
@@ -51,15 +51,9 @@ namespace EncryptionApp.ViewModel
         }));
         public CustomCommand SetHashEncryption => setHashEncryption ?? (setHashEncryption = new CustomCommand(obj => {
             currentEncryptor = new HashEncryption();
-            SetMetaInfo("Ключ", "No name", "Необратимый", Visibility.Collapsed);
+            SetMetaInfo("", "", "Необратимый", Visibility.Collapsed);
         }));
         public void TestMethod() {
-            RSACryptoServiceProvider rsa = new RSACryptoServiceProvider(1024);
-            string privateKey = $"-----BEGIN RSA PRIVATE KEY-----\nBIICYTCCAl0CAQACgYEAo/2cuhl0t/fcMQmLE6f6anPnJkoDmr4VRQ73zdkC2tNOG8qlaTXfqzIxWZspBODdEO9lNtviEQ53U/eHqZCEnGiaNZgfoECFXHwqwI2epvjlsET8QyRmSERx/8I+Xoc/Jqh1GxsE7Um4GEeZ21hP+5yaaxFzrgLxnBLpc7Kjre8CAwEAAQKBgBSr0kavEMRjzPCteEd5BBrJE1kDOWMXFM1IrrnW4gI9YnokWCdj8Ba/U/MsmMYRpiwNUR/SJbPqs+X0rLgWDHEKxwkeojo7Kzs89Dw3c3h0TYqWU8Sz9pfYNpRufwL95CXu6Wh7A+bjD7rYKbYiGcXAyj2XSoNe1i+tfDYPVzIxAkEA5n0nu799qlGHLD15eSBD3gyhx8MgCTKKDzAixueTcBD5J3n2lT/eXceycvzsGnFCz18Jj4Asw1K89N0XoxNEqQJBALYkPyywLxAhOiz05Undzh3qec7ePtmG/EEFGtVdIYWW/OlHhLMAd5qDCmKmONiptEp1aVTT9/TboADEYuRrZNcCQGd4that/48vbHxq2JaM6orLpvET4tTeMGZjGKmsml7L795N/WnBM2VsWesPKjswr2qC4rreMro48YUHoC3gX4kCQQCwaHbPX2yVoLjppd8VJcBl9R04oMQahsR2bO1KTUMUUeJuRhheDkvI2LYMSZWxMtwtaX407H+xJa3YUFy/gsxNAkEAnigw6SR0CXIbdo8x7HQ9CldiNWI6sf/D2dds8Da1r6nQTuvrmTqtojI9Xvisf0M/GqeP9hVxNzIYowX3dEuCrg==\n-----END RSA PRIVATE KEY-----";
-            Debug.WriteLine(SecondKeySequence);
-            string pem = RSAKeys.ExportPrivateKey(rsa);
-            Debug.WriteLine(pem);
-            //rsa = RSAKeys.ImportPrivateKey(privateKey);
         }
         public CustomCommand EncryptFile => encryptFile ?? (encryptFile = new CustomCommand(obj => {
             if (!String.IsNullOrEmpty(currentFilePath)) {
