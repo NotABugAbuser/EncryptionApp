@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -53,8 +54,8 @@ namespace EncryptionApp.ViewModel
             SetMetaInfo("Ключ", "No name", "Хеширование", Visibility.Collapsed);
         }));
         public void TestMethod() {
-        }
-        public void AnotherTestMethod(string key) {
+            RSACryptoServiceProvider rsa = new RSACryptoServiceProvider();
+            var rsap = new RSAParameters();
         }
         public CustomCommand EncryptFile => encryptFile ?? (encryptFile = new CustomCommand(obj => {
             if (!String.IsNullOrEmpty(currentFilePath)) {
@@ -64,7 +65,6 @@ namespace EncryptionApp.ViewModel
             }
         }));
         public CustomCommand DecryptFile => decryptFile ?? (decryptFile = new CustomCommand(obj => {
-            AnotherTestMethod(FirstKeySequence);
             if (!String.IsNullOrEmpty(currentFilePath)) {
                 byte[] data = File.ReadAllBytes(currentFilePath);
                 data = currentEncryptor.Decrypt(data, FirstKeySequence, SecondKeySequence);
@@ -81,6 +81,7 @@ namespace EncryptionApp.ViewModel
         }));
         public CustomCommand CreateKeys => createKeys ?? (createKeys = new CustomCommand(obj => {
             CreateKeysMethod();
+            TestMethod();
         }));
 
         private void CreateKeysMethod() {
