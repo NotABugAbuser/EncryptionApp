@@ -56,6 +56,20 @@ namespace EncryptionApp.ViewModel
         public void TestMethod() {
             RSACryptoServiceProvider rsa = new RSACryptoServiceProvider();
             var rsap = new RSAParameters();
+            byte[] publicKey = new byte[256];
+            for (byte i = 0; i < 255; i++) {
+                publicKey[i] = i;
+            }
+            byte[] data = new byte[10] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+            rsap.Modulus = publicKey;
+            rsap.Exponent = new byte[] { 0,1,0 };
+            rsa.ImportParameters(rsap);
+
+
+            byte[] encrypted = rsa.Encrypt(data, false);
+            byte[] decrypted = rsa.Decrypt(encrypted, false);
+            string result = Convert.ToBase64String(decrypted);
+            Debug.WriteLine(result);
         }
         public CustomCommand EncryptFile => encryptFile ?? (encryptFile = new CustomCommand(obj => {
             if (!String.IsNullOrEmpty(currentFilePath)) {
