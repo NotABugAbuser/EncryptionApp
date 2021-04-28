@@ -54,22 +54,13 @@ namespace EncryptionApp.ViewModel
             SetMetaInfo("Ключ", "No name", "Хеширование", Visibility.Collapsed);
         }));
         public void TestMethod() {
-            RSACryptoServiceProvider rsa = new RSACryptoServiceProvider();
-            var rsap = new RSAParameters();
-            byte[] publicKey = new byte[256];
-            for (byte i = 0; i < 255; i++) {
-                publicKey[i] = i;
-            }
-            byte[] data = new byte[10] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-            rsap.Modulus = publicKey;
-            rsap.Exponent = new byte[] { 0,1,0 };
-            rsa.ImportParameters(rsap);
+            RSACryptoServiceProvider rsa = new RSACryptoServiceProvider(512);
+            rsa.ExportParameters(true);
+            byte[] publicKey = rsa.ExportCspBlob(false);
+            byte[] privateKey = rsa.ExportCspBlob(true);
+            Debug.WriteLine(Convert.ToBase64String(publicKey));
+            Debug.WriteLine(Convert.ToBase64String(privateKey));
 
-
-            byte[] encrypted = rsa.Encrypt(data, false);
-            byte[] decrypted = rsa.Decrypt(encrypted, false);
-            string result = Convert.ToBase64String(decrypted);
-            Debug.WriteLine(result);
         }
         public CustomCommand EncryptFile => encryptFile ?? (encryptFile = new CustomCommand(obj => {
             if (!String.IsNullOrEmpty(currentFilePath)) {
