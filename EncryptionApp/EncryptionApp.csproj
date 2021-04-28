@@ -98,6 +98,7 @@
     <Compile Include="Model\CustomCommand.cs" />
     <Compile Include="Model\Encryption.cs" />
     <Compile Include="Model\HashEncryption.cs" />
+    <Compile Include="Model\RSAKeys.cs" />
     <Compile Include="Model\SymmetricEncryption.cs" />
     <Compile Include="ViewModel\MainWindowVM.cs" />
     <Compile Include="View\MainWindow.xaml.cs">
