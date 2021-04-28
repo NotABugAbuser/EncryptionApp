@@ -11,7 +11,7 @@ namespace EncryptionApp.Model
 {
     class HashEncryption : Encryption
     {
-        public override byte[] Encrypt(byte[] data, string key, string _) {
+        public override byte[] Encrypt(byte[] data, string key = null, string skey = null) {
             using (MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider()) {
                 string path = Path.GetFullPath("lastHash.txt");
                 byte[] md5Hash = md5.ComputeHash(data);

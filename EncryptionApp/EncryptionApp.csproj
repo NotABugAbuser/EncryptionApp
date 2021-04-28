@@ -99,6 +99,7 @@
     </Compile>
     <Compile Include="Model\AsymmetricEncryption.cs" />
     <Compile Include="Model\CustomCommand.cs" />
+    <Compile Include="Model\DataSigning.cs" />
     <Compile Include="Model\Encryption.cs" />
     <Compile Include="Model\HashEncryption.cs" />
     <Compile Include="Model\RSAKeys.cs" />
