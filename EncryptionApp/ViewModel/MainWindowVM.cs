@@ -18,7 +18,7 @@ namespace EncryptionApp.ViewModel
 {
     class MainWindowVM : INotifyPropertyChanged
     {
-        private Encryption currentEncryptor = new SymmetricEncryption();
+        private Encryption currentEncryptor = new HashEncryption();
         private string firstKeySequenceName = "Ключ";
         private string firstKeySequence = "";
         private string secondKeySequenceName = "Вектор инициализации";
@@ -57,19 +57,19 @@ namespace EncryptionApp.ViewModel
         public void AnotherTestMethod(string key) {
         }
         public CustomCommand EncryptFile => encryptFile ?? (encryptFile = new CustomCommand(obj => {
-            //if (!String.IsNullOrEmpty(currentFilePath)) {
-            //    byte[] data = File.ReadAllBytes(currentFilePath);
-            //    data = currentEncryptor.Encrypt(data, FirstKeySequence, SecondKeySequence);
-            //    File.WriteAllBytes(currentFilePath, data);
-            //}
+            if (!String.IsNullOrEmpty(currentFilePath)) {
+                byte[] data = File.ReadAllBytes(currentFilePath);
+                data = currentEncryptor.Encrypt(data, FirstKeySequence, SecondKeySequence);
+                File.WriteAllBytes(currentFilePath, data);
+            }
         }));
         public CustomCommand DecryptFile => decryptFile ?? (decryptFile = new CustomCommand(obj => {
             AnotherTestMethod(FirstKeySequence);
-            //if (!String.IsNullOrEmpty(currentFilePath)) {
-            //    byte[] data = File.ReadAllBytes(currentFilePath);
-            //    data = currentEncryptor.Decrypt(data, FirstKeySequence, SecondKeySequence);
-            //    File.WriteAllBytes(currentFilePath, data);
-            //}
+            if (!String.IsNullOrEmpty(currentFilePath)) {
+                byte[] data = File.ReadAllBytes(currentFilePath);
+                data = currentEncryptor.Decrypt(data, FirstKeySequence, SecondKeySequence);
+                File.WriteAllBytes(currentFilePath, data);
+            }
         }));
         public CustomCommand OpenFile => openFile ?? (openFile = new CustomCommand(obj => {
             OpenFileDialog openFileDialog = new OpenFileDialog();
