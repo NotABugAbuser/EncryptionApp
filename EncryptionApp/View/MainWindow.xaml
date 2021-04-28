@@ -176,17 +176,49 @@
                 <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
             <StackPanel
+                Grid.Column="1"
+                Grid.Row="1"
+                VerticalAlignment="Top">
+                <TextBlock
+                    Margin="0,0,0,3"
+                    Style="{StaticResource Header}"
+                    Text="{Binding StringFormat=Текущий файл: {0}, Path=CurrentFileName}"/>
+            </StackPanel>
+            <StackPanel
+                VerticalAlignment="Bottom"
+                Grid.Column="1"
+                Grid.Row="1">
+                <TextBlock
+                    Style="{StaticResource Header}"
+                    Text="Подпись"/>
+                <TextBox
+                    Height="40"
+                    Text="{Binding SignaturePhrase, UpdateSourceTrigger=PropertyChanged}"
+                    Style="{StaticResource KeyText}"/>
+                <TextBlock
+                    Style="{StaticResource Header}"
+                    Text="Ключ подписи"/>
+                <TextBox
+                    Height="40"
+                    Text="{Binding FirstKeySequence}"
+                    Style="{StaticResource KeyText}"/>
+            </StackPanel>
+            <StackPanel
                 VerticalAlignment="Top"
                 Grid.Column="3"
                 Grid.Row="1">
                 <Button
+                    Content="Открыть файл"
+                    Command="{Binding OpenFile}"
+                    Style="{StaticResource BaseButton}"/>
+                <Button
                     Content="Подписать"
                     Style="{StaticResource BaseButton}"/>
                 <Button
-                    Content="Проверить подпись"
+                    Content="Проверить файл"
                     Style="{StaticResource BaseButton}"/>
                 <Button
-                    Content="Открыть файл"
+                    Content="Сравнить подписи"
                     Style="{StaticResource BaseButton}"/>
             </StackPanel>
         </Grid>

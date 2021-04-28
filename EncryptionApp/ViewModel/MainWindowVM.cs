@@ -36,6 +36,10 @@ namespace EncryptionApp.ViewModel
         private CustomCommand setAsymmetricEncryption;
         private CustomCommand setSymmetricEncryption;
         private CustomCommand setHashEncryption;
+        private CustomCommand signFile;
+        private CustomCommand checkFile;
+        private CustomCommand compareSignatures;
+        private string signaturePhrase = "";
         public MainWindowVM() {
             CreateKeysMethod();
         }
@@ -65,6 +69,7 @@ namespace EncryptionApp.ViewModel
                 byte[] data = File.ReadAllBytes(currentFilePath);
                 data = currentEncryptor.Encrypt(data, FirstKeySequence, SecondKeySequence);
                 File.WriteAllBytes(currentFilePath, data);
+                MessageBox.Show("Файл успешно зашифрован");
             }
         }));
         public CustomCommand DecryptFile => decryptFile ?? (decryptFile = new CustomCommand(obj => {
@@ -72,6 +77,7 @@ namespace EncryptionApp.ViewModel
                 byte[] data = File.ReadAllBytes(currentFilePath);
                 data = currentEncryptor.Decrypt(data, FirstKeySequence, SecondKeySequence);
                 File.WriteAllBytes(currentFilePath, data);
+                MessageBox.Show("Файл успешно расшифрован");
             }
         }));
         public CustomCommand OpenFile => openFile ?? (openFile = new CustomCommand(obj => {
@@ -137,7 +143,7 @@ namespace EncryptionApp.ViewModel
             }
         }
 
-      
+
 
         public Visibility KeyVisibilities {
             get => keyVisibilities;
@@ -147,12 +153,20 @@ namespace EncryptionApp.ViewModel
             }
         }
 
-        public double KeyFontSize { 
+        public double KeyFontSize {
             get => keyFontSize;
             set {
                 keyFontSize = value;
                 OnPropertyChanged();
-            } 
+            }
+        }
+
+        public string SignaturePhrase {
+            get => signaturePhrase;
+            set {
+                signaturePhrase = value;
+                OnPropertyChanged();
+            }
         }
 
         public void OnPropertyChanged([CallerMemberName] string property = null) {

@@ -10,8 +10,16 @@ namespace EncryptionApp.Model
 {
     class Signature
     {
-        private byte[] data;
-        private Int16 Length = 0;
-        
+        private byte[] signedData;
+        private int length = 0;
+
+        public byte[] SignedData {
+            get => signedData; 
+            set => signedData = value;
+        }
+        public int Length {
+            get => length; 
+            set => length = value;
+        }
     }
 }
