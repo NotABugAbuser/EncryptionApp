@@ -27,6 +27,7 @@ namespace EncryptionApp.ViewModel
         private string currentFilePath = "";
         private string currentFileName = "Не выбран";
         private string currentEncryptionMethod = "Симметричный";
+        private double keyFontSize = 20;
         private Visibility keyVisibilities = Visibility.Visible;
         private CustomCommand encryptFile;
         private CustomCommand decryptFile;
@@ -35,23 +36,24 @@ namespace EncryptionApp.ViewModel
         private CustomCommand setAsymmetricEncryption;
         private CustomCommand setSymmetricEncryption;
         private CustomCommand setHashEncryption;
-        private void SetMetaInfo(string firstKeySequenceName, string secondKeySequenceName, string currentEncryptionMethod, Visibility keyVisibilities) {
+        private void SetMetaInfo(string firstKeySequenceName, string secondKeySequenceName, string currentEncryptionMethod, Visibility keyVisibilities, double keyFontSize) {
             this.FirstKeySequenceName = firstKeySequenceName;
             this.SecondKeySequenceName = secondKeySequenceName;
             this.CurrentEncryptionMethod = currentEncryptionMethod;
             this.KeyVisibilities = keyVisibilities;
+            this.KeyFontSize = keyFontSize;
         }
         public CustomCommand SetAsymmetricEncryption => setAsymmetricEncryption ?? (setAsymmetricEncryption = new CustomCommand(obj => {
             currentEncryptor = new AsymmetricEncryption();
-            SetMetaInfo("Открытый ключ", "Закрытый ключ", "Асимметричный", Visibility.Visible);
+            SetMetaInfo("Открытый ключ", "Закрытый ключ", "Асимметричный", Visibility.Visible, 10);
         }));
         public CustomCommand SetSymmetricEncryption => setSymmetricEncryption ?? (setSymmetricEncryption = new CustomCommand(obj => {
             currentEncryptor = new SymmetricEncryption();
-            SetMetaInfo("Ключ", "Вектор инициализации", "Симметричный", Visibility.Visible);
+            SetMetaInfo("Ключ", "Вектор инициализации", "Симметричный", Visibility.Visible, 20);
         }));
         public CustomCommand SetHashEncryption => setHashEncryption ?? (setHashEncryption = new CustomCommand(obj => {
             currentEncryptor = new HashEncryption();
-            SetMetaInfo("", "", "Необратимый", Visibility.Collapsed);
+            SetMetaInfo("", "", "Необратимый", Visibility.Collapsed, 20);
         }));
         public void TestMethod() {
         }
@@ -140,6 +142,14 @@ namespace EncryptionApp.ViewModel
                 keyVisibilities = value;
                 OnPropertyChanged();
             }
+        }
+
+        public double KeyFontSize { 
+            get => keyFontSize;
+            set {
+                keyFontSize = value;
+                OnPropertyChanged();
+            } 
         }
 
         public void OnPropertyChanged([CallerMemberName] string property = null) {

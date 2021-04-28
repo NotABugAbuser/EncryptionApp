@@ -21,17 +21,25 @@ namespace EncryptionApp.Model
 
         RSACryptoServiceProvider rsa = new RSACryptoServiceProvider(2048);
         public override byte[] Encrypt(byte[] data, string _, string privateKeyInfo) {
-            rsa = RSAKeys.ImportPrivateKey(privateKeyInfo);
-            data = rsa.Encrypt(data, false);
+            if (data.Length < 256) {
+                rsa = RSAKeys.ImportPrivateKey(privateKeyInfo);
+                data = rsa.Encrypt(data, false);
+            } else {
+                MessageBox.Show("Вес данных не должен превышать 2048 бит");
+            }
             return data;
         }
         public override byte[] Decrypt(byte[] data, string _, string privateKeyInfo) {
-            rsa = RSAKeys.ImportPrivateKey(privateKeyInfo);
-            data = rsa.Decrypt(data, false);
+            if (data.Length < 256) {
+                rsa = RSAKeys.ImportPrivateKey(privateKeyInfo);
+                data = rsa.Decrypt(data, false);
+            } else {
+                MessageBox.Show("Вес данных не должен превышать 2048 бит");
+            }
             return data;
         }
         public override string[] CreateKeys() {
-            return new string[] { 
+            return new string[] {
                 RSAKeys.ExportPublicKey(rsa),
                 RSAKeys.ExportPrivateKey(rsa)
             };

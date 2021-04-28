@@ -101,12 +101,16 @@
             <TextBox
                 Visibility="{Binding KeyVisibilities}"
                 Style="{StaticResource KeyText}"
+                FontSize="{Binding KeyFontSize}"
+                TextWrapping="wrap"
+                AcceptsReturn="True"
                 Text="{Binding FirstKeySequence, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBlock
                 Visibility="{Binding KeyVisibilities}"
                 Style="{StaticResource Header}"
                 Text="{Binding SecondKeySequenceName}"/>
             <TextBox
+                FontSize="{Binding KeyFontSize}"
                 Visibility="{Binding KeyVisibilities}"
                 Style="{StaticResource KeyText}"
                 TextWrapping="wrap"
