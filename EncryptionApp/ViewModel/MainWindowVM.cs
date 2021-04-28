@@ -20,9 +20,9 @@ namespace EncryptionApp.ViewModel
     class MainWindowVM : INotifyPropertyChanged
     {
         private Encryption currentEncryptor = new SymmetricEncryption();
-        private string firstKeySequenceName = "Ключ";
+        private string firstKeySequenceName = "Ключ (BASE64)";
         private string firstKeySequence = "";
-        private string secondKeySequenceName = "Вектор инициализации";
+        private string secondKeySequenceName = "Вектор инициализации (BASE64)";
         private string secondKeySequence = "";
         private string currentFilePath = "";
         private string currentFileName = "Не выбран";
@@ -36,6 +36,9 @@ namespace EncryptionApp.ViewModel
         private CustomCommand setAsymmetricEncryption;
         private CustomCommand setSymmetricEncryption;
         private CustomCommand setHashEncryption;
+        public MainWindowVM() {
+            CreateKeysMethod();
+        }
         private void SetMetaInfo(string firstKeySequenceName, string secondKeySequenceName, string currentEncryptionMethod, Visibility keyVisibilities, double keyFontSize) {
             this.FirstKeySequenceName = firstKeySequenceName;
             this.SecondKeySequenceName = secondKeySequenceName;
@@ -45,11 +48,11 @@ namespace EncryptionApp.ViewModel
         }
         public CustomCommand SetAsymmetricEncryption => setAsymmetricEncryption ?? (setAsymmetricEncryption = new CustomCommand(obj => {
             currentEncryptor = new AsymmetricEncryption();
-            SetMetaInfo("Открытый ключ", "Закрытый ключ", "Асимметричный", Visibility.Visible, 10);
+            SetMetaInfo("Открытый ключ (PEM)", "Закрытый ключ (PEM)", "Асимметричный", Visibility.Visible, 10);
         }));
         public CustomCommand SetSymmetricEncryption => setSymmetricEncryption ?? (setSymmetricEncryption = new CustomCommand(obj => {
             currentEncryptor = new SymmetricEncryption();
-            SetMetaInfo("Ключ", "Вектор инициализации", "Симметричный", Visibility.Visible, 20);
+            SetMetaInfo("Ключ (BASE64)", "Вектор инициализации (BASE64)", "Симметричный", Visibility.Visible, 20);
         }));
         public CustomCommand SetHashEncryption => setHashEncryption ?? (setHashEncryption = new CustomCommand(obj => {
             currentEncryptor = new HashEncryption();
