@@ -50,6 +50,25 @@ namespace EncryptionApp.ViewModel
             this.KeyVisibilities = keyVisibilities;
             this.KeyFontSize = keyFontSize;
         }
+        public CustomCommand SignFile => signFile ?? (signFile = new CustomCommand(obj => {
+            byte[] data = File.ReadAllBytes(currentFilePath);
+            data = DataSigning.SignData(data, "Eugene");
+            File.WriteAllBytes(currentFilePath + ".sign", data);
+        }));
+        public CustomCommand CompareSignature => compareSignatures ?? (compareSignatures = new CustomCommand(obj => {
+            string firstPath = "";
+            string secondPath = "";
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true) {
+                firstPath = openFileDialog.FileName;
+                if(openFileDialog.ShowDialog() == true) {
+                    secondPath = openFileDialog.FileName;
+                    Debug.WriteLine(firstPath);
+                    Debug.WriteLine(secondPath);
+
+                }
+            }
+        }));
         public CustomCommand SetAsymmetricEncryption => setAsymmetricEncryption ?? (setAsymmetricEncryption = new CustomCommand(obj => {
             currentEncryptor = new AsymmetricEncryption();
             SetMetaInfo("Открытый ключ (PEM)", "Закрытый ключ (PEM)", "Асимметричный", Visibility.Visible, 10);

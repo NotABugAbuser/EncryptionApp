@@ -213,12 +213,14 @@
                     Style="{StaticResource BaseButton}"/>
                 <Button
                     Content="Подписать"
+                    Command="{Binding SignFile}"
                     Style="{StaticResource BaseButton}"/>
                 <Button
                     Content="Проверить файл"
                     Style="{StaticResource BaseButton}"/>
                 <Button
                     Content="Сравнить подписи"
+                    Command="{Binding CompareSignature}"
                     Style="{StaticResource BaseButton}"/>
             </StackPanel>
         </Grid>

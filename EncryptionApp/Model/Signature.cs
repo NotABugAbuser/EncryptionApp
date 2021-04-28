@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace EncryptionApp.Model
 {
+    [Serializable]
     class Signature
     {
         private byte[] signedData;

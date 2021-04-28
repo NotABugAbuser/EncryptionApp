@@ -10,7 +10,7 @@ namespace EncryptionApp.Model
 {
     class DataSigning
     {
-        public byte[] SignData(byte[] data, string signaturePhrase, byte[] key) {
+        public static byte[] SignData(byte[] data, string signaturePhrase, byte[] key = null) {
             byte[] signaturePhraseBlob = ToByteArray<string>(signaturePhrase);
             HashEncryption md5Encryptor = new HashEncryption();
             byte[] hashedData = md5Encryptor.Encrypt(data);
