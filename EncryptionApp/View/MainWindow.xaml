@@ -5,8 +5,99 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EncryptionApp"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Background="#252526"
+        Title="MainWindow" Height="600" Width="1000">
+    <Window.Resources>
+        <SolidColorBrush Color="#252526" x:Key="PrimaryBackground"/>
+        <SolidColorBrush Color="#2d2d30" x:Key="SecondaryBackground"/>
+        <SolidColorBrush Color="#2d2d30" x:Key="PrimaryBlack"/>
+        <SolidColorBrush Color="#333337" x:Key="LightPrimaryBlack"/>
+        <SolidColorBrush Color="#555555" x:Key="BorderGray"/>
+        <Style x:Key="BaseBorder" TargetType="Border">
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderGray}"/>
+        </Style>
+        <ControlTemplate TargetType="Button" x:Key="BaseButtonTemplate">
+            <Border
+                Background="{TemplateBinding Background}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                BorderBrush="{TemplateBinding BorderBrush}">
+                <ContentPresenter
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"/>
+            </Border>
+        </ControlTemplate>
+        <Style x:Key="BaseButton" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource PrimaryBlack}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderGray}"/>
+            <Setter Property="Foreground" Value="#eee"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Padding" Value="20,0"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+            <Setter Property="Template" Value="{StaticResource BaseButtonTemplate}"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource LightPrimaryBlack}"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="{StaticResource PrimaryBlack}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="30"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="30"/>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="30"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <StackPanel
+            VerticalAlignment="Top"
+            Grid.Column="3"
+            Grid.Row="1">
+            <Button
+                Style="{StaticResource BaseButton}"
+                Content="Симметричный (AES)"
+                Command=""/>
+            <Button
+                Style="{StaticResource BaseButton}"
+                Content="Асимметричный (RSA)"
+                Command=""/>
+            <Button
+                Style="{StaticResource BaseButton}"
+                Content="Хеширование"
+                Command=""/>
+        </StackPanel>
+        <StackPanel
+            VerticalAlignment="Bottom"
+            Grid.Column="3"
+            Grid.Row="1">
+            <Button
+                Style="{StaticResource BaseButton}"
+                Command=""
+                Content="Открыть"/>
+            <Button
+                Style="{StaticResource BaseButton}"
+                Command=""
+                Content="Создать ключи"/>
+            <Button
+                Style="{StaticResource BaseButton}"
+                Command=""
+                Content="Зашифровать"/>
+            <Button
+                Margin="0"
+                Style="{StaticResource BaseButton}"
+                Command=""
+                Content="Расшифровать"/>
+        </StackPanel>
     </Grid>
 </Window>

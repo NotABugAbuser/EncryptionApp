@@ -8,5 +8,8 @@ namespace EncryptionApp.Model
 {
     class Encryption
     {
+        public virtual byte[] Encrypt(byte[] data) {
+            throw new NotImplementedException();
+        } 
     }
 }
