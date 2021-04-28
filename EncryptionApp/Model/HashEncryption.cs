@@ -14,7 +14,9 @@ namespace EncryptionApp.Model
         public override byte[] Encrypt(byte[] data, string key, string _) {
             using (MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider()) {
                 string path = Path.GetFullPath("lastHash.txt");
-                File.WriteAllText(path, Convert.ToBase64String(md5.ComputeHash(data)));
+                byte[] md5Hash = md5.ComputeHash(data);
+                string hexHash = BitConverter.ToString(md5Hash).Replace("-","");
+                File.WriteAllText(path, hexHash);
                 MessageBox.Show("Хеш последнего преобразованного файла сохранен в lastHash");
                 return data;
             }

@@ -68,96 +68,127 @@
         <vm:MainWindowVM/>
     </Window.DataContext>
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="30"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="30"/>
-            <ColumnDefinition Width="210"/>
-            <ColumnDefinition Width="30"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="50"/>
-        </Grid.RowDefinitions>
-        <StackPanel
-            Grid.Row="1"
-            VerticalAlignment="Top"
-            Grid.Column="1">
-            <TextBlock
-                Margin="0,0,0,3"
-                Style="{StaticResource Header}"
-                Text="{Binding StringFormat=Текущий файл: {0}, Path=CurrentFileName}"/>
-            <TextBlock
-                Style="{StaticResource Header}"
-                Text="{Binding StringFormat=Текущий метод шифрования: {0}, Path=CurrentEncryptionMethod}"/>
-        </StackPanel>
-        <StackPanel
-            Grid.Column="1"
-            VerticalAlignment="Bottom"
-            Grid.Row="1">
-            <TextBlock
-                Visibility="{Binding KeyVisibilities}"
-                Style="{StaticResource Header}"
-                Text="{Binding FirstKeySequenceName}"/>
-            <TextBox
-                Visibility="{Binding KeyVisibilities}"
-                Style="{StaticResource KeyText}"
-                FontSize="{Binding KeyFontSize}"
-                TextWrapping="wrap"
-                AcceptsReturn="True"
-                Text="{Binding FirstKeySequence, UpdateSourceTrigger=PropertyChanged}"/>
-            <TextBlock
-                Visibility="{Binding KeyVisibilities}"
-                Style="{StaticResource Header}"
-                Text="{Binding SecondKeySequenceName}"/>
-            <TextBox
-                FontSize="{Binding KeyFontSize}"
-                Visibility="{Binding KeyVisibilities}"
-                Style="{StaticResource KeyText}"
-                TextWrapping="wrap"
-                AcceptsReturn="True"
-                Text="{Binding SecondKeySequence, UpdateSourceTrigger=PropertyChanged}"/>
-        </StackPanel>
-        <StackPanel
-            VerticalAlignment="Top"
-            Grid.Column="3"
-            Grid.Row="1">
-            <Button
-                Style="{StaticResource BaseButton}"
-                Content="Симметричный (AES128)"
-                Command="{Binding SetSymmetricEncryption}"/>
-            <Button
-                Style="{StaticResource BaseButton}"
-                Content="Асимметричный (RSA2048)"
-                Command="{Binding SetAsymmetricEncryption}"/>
-            <Button
-                Style="{StaticResource BaseButton}"
-                Content="Необратимый (MD5)"
-                Command="{Binding SetHashEncryption}"/>
-        </StackPanel>
-        <StackPanel
-            VerticalAlignment="Bottom"
-            Grid.Column="3"
-            Grid.Row="1">
-            <Button
-                Style="{StaticResource BaseButton}"
-                Command="{Binding OpenFile}"
-                Content="Открыть"/>
-            <Button
-                Visibility="{Binding KeyVisibilities}"
-                Style="{StaticResource BaseButton}"
-                Command="{Binding CreateKeys}"
-                Content="Создать ключи"/>
-            <Button
-                Style="{StaticResource BaseButton}"
-                Command="{Binding EncryptFile}"
-                Content="Зашифровать"/>
-            <Button
-                Margin="0"
-                Style="{StaticResource BaseButton}"
-                Command="{Binding DecryptFile}"
-                Content="Расшифровать"/>
-        </StackPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Width="210"/>
+                <ColumnDefinition Width="30"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+            <StackPanel
+                Grid.Row="1"
+                VerticalAlignment="Top"
+                Grid.Column="1">
+                <TextBlock
+                    Margin="0,0,0,3"
+                    Style="{StaticResource Header}"
+                    Text="{Binding StringFormat=Текущий файл: {0}, Path=CurrentFileName}"/>
+                <TextBlock
+                    Style="{StaticResource Header}"
+                    Text="{Binding StringFormat=Текущий метод шифрования: {0}, Path=CurrentEncryptionMethod}"/>
+            </StackPanel>
+            <StackPanel
+                Grid.Column="1"
+                VerticalAlignment="Bottom"
+                Grid.Row="1">
+                <TextBlock
+                    Visibility="{Binding KeyVisibilities}"
+                    Style="{StaticResource Header}"
+                    Text="{Binding FirstKeySequenceName}"/>
+                <TextBox
+                    Visibility="{Binding KeyVisibilities}"
+                    Style="{StaticResource KeyText}"
+                    FontSize="{Binding KeyFontSize}"
+                    TextWrapping="wrap"
+                    AcceptsReturn="True"
+                    Text="{Binding FirstKeySequence, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock
+                    Visibility="{Binding KeyVisibilities}"
+                    Style="{StaticResource Header}"
+                    Text="{Binding SecondKeySequenceName}"/>
+                <TextBox
+                    FontSize="{Binding KeyFontSize}"
+                    Visibility="{Binding KeyVisibilities}"
+                    Style="{StaticResource KeyText}"
+                    TextWrapping="wrap"
+                    AcceptsReturn="True"
+                    Text="{Binding SecondKeySequence, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+            <StackPanel
+                VerticalAlignment="Top"
+                Grid.Column="3"
+                Grid.Row="1">
+                <Button
+                    Style="{StaticResource BaseButton}"
+                    Content="Симметричный (AES128)"
+                    Command="{Binding SetSymmetricEncryption}"/>
+                <Button
+                    Style="{StaticResource BaseButton}"
+                    Content="Асимметричный (RSA2048)"
+                    Command="{Binding SetAsymmetricEncryption}"/>
+                <Button
+                    Style="{StaticResource BaseButton}"
+                    Content="Необратимый (MD5)"
+                    Command="{Binding SetHashEncryption}"/>
+            </StackPanel>
+            <StackPanel
+                VerticalAlignment="Bottom"
+                Grid.Column="3"
+                Grid.Row="1">
+                <Button
+                    Style="{StaticResource BaseButton}"
+                    Command="{Binding OpenFile}"
+                    Content="Открыть"/>
+                <Button
+                    Visibility="{Binding KeyVisibilities}"
+                    Style="{StaticResource BaseButton}"
+                    Command="{Binding CreateKeys}"
+                    Content="Создать ключи"/>
+                <Button
+                    Style="{StaticResource BaseButton}"
+                    Command="{Binding EncryptFile}"
+                    Content="Зашифровать"/>
+                <Button
+                    Margin="0"
+                    Style="{StaticResource BaseButton}"
+                    Command="{Binding DecryptFile}"
+                    Content="Расшифровать"/>
+            </StackPanel>
+        </Grid>
+        <Grid
+            Background="{StaticResource PrimaryBackground}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Width="210"/>
+                <ColumnDefinition Width="30"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+            <StackPanel
+                VerticalAlignment="Top"
+                Grid.Column="3"
+                Grid.Row="1">
+                <Button
+                    Content="Подписать"
+                    Style="{StaticResource BaseButton}"/>
+                <Button
+                    Content="Проверить подпись"
+                    Style="{StaticResource BaseButton}"/>
+                <Button
+                    Content="Открыть файл"
+                    Style="{StaticResource BaseButton}"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>

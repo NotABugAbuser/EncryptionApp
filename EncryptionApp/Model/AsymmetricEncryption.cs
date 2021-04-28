@@ -24,7 +24,7 @@ namespace EncryptionApp.Model
             try {
                 rsa = RSAKeys.ImportPrivateKey(privateKeyInfo);
                 data = rsa.Encrypt(data, false);
-            } catch (Exception ex) {
+            } catch (Exception) {
                 MessageBox.Show("RSA 2048 не поддерживает шифрование данных такого объема");
             }
             return data;
@@ -33,7 +33,7 @@ namespace EncryptionApp.Model
             try {
                 rsa = RSAKeys.ImportPrivateKey(privateKeyInfo);
                 data = rsa.Decrypt(data, false);
-            } catch (Exception ex) {
+            } catch (Exception) {
                 MessageBox.Show("RSA 2048 не поддерживает шифрование данных такого объема");
             }
             return data;
