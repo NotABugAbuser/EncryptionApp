@@ -21,7 +21,7 @@ namespace EncryptionApp.Model
             foreach (byte hd in hashedData) {
                 resultHash.Add(hd);
             }
-            foreach(byte hsp in hashedSignaturePhrase) {
+            foreach (byte hsp in hashedSignaturePhrase) {
                 resultHash.Add(hsp);
             }
             Signature signature = new Signature();
@@ -30,6 +30,25 @@ namespace EncryptionApp.Model
             SymmetricEncryption aes128Encryptor = new SymmetricEncryption();
             byte[] encryptedSignature = aes128Encryptor.Encrypt(ToByteArray(signature), key, key);
             return encryptedSignature;
+        }
+        public static void CheckFile(string filePath, string key) {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true) {
+                string signaturePath = openFileDialog.FileName;
+                Signature signature = GetSignature(File.ReadAllBytes(signaturePath), key);
+                byte[] data = File.ReadAllBytes(filePath);
+                bool isEqual = true;
+                for (int i = 0; i < data.Length; i++) {
+                    isEqual = data[i] == signature.SignedData[i];
+                    if (!isEqual) {
+                        MessageBox.Show("Файл не соответствует подписи");
+                        break;
+                    }
+                }
+                if (isEqual) {
+                    MessageBox.Show("Файл соответствует подписи");
+                }
+            }
         }
         public static void VerifySign(string key) {
             string firstPath = "";

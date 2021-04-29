@@ -42,6 +42,9 @@ namespace EncryptionApp.ViewModel
         private string signaturePhrase = "";
         public MainWindowVM() {
             CreateKeysMethod();
+            byte[] bytes = new byte[8];
+            new Random().NextBytes(bytes);
+            SignaturePhrase = Convert.ToBase64String(bytes);
         }
         private void SetMetaInfo(string firstKeySequenceName, string secondKeySequenceName, string currentEncryptionMethod, Visibility keyVisibilities, double keyFontSize) {
             this.FirstKeySequenceName = firstKeySequenceName;
@@ -54,6 +57,9 @@ namespace EncryptionApp.ViewModel
             byte[] data = File.ReadAllBytes(currentFilePath);
             data = DataSigning.SignData(data, SignaturePhrase, FirstKeySequence);
             File.WriteAllBytes(currentFilePath + ".sign", data);
+        }));
+        public CustomCommand CheckFile => checkFile ?? (checkFile = new CustomCommand(obj => {
+            DataSigning.CheckFile(currentFilePath, FirstKeySequence);
         }));
         public CustomCommand VerifySignatures => verifySignatures ?? (verifySignatures = new CustomCommand(obj => {
             DataSigning.VerifySign(FirstKeySequence);
@@ -70,14 +76,11 @@ namespace EncryptionApp.ViewModel
             currentEncryptor = new HashEncryption();
             SetMetaInfo("", "", "Необратимый", Visibility.Collapsed, 20);
         }));
-        public void TestMethod() {
-        }
         public CustomCommand EncryptFile => encryptFile ?? (encryptFile = new CustomCommand(obj => {
             if (!String.IsNullOrEmpty(currentFilePath)) {
                 byte[] data = File.ReadAllBytes(currentFilePath);
                 data = currentEncryptor.Encrypt(data, FirstKeySequence, SecondKeySequence);
                 File.WriteAllBytes(currentFilePath, data);
-                MessageBox.Show("Файл успешно зашифрован");
             }
         }));
         public CustomCommand DecryptFile => decryptFile ?? (decryptFile = new CustomCommand(obj => {
@@ -85,7 +88,6 @@ namespace EncryptionApp.ViewModel
                 byte[] data = File.ReadAllBytes(currentFilePath);
                 data = currentEncryptor.Decrypt(data, FirstKeySequence, SecondKeySequence);
                 File.WriteAllBytes(currentFilePath, data);
-                MessageBox.Show("Файл успешно расшифрован");
             }
         }));
         public CustomCommand OpenFile => openFile ?? (openFile = new CustomCommand(obj => {
@@ -98,7 +100,6 @@ namespace EncryptionApp.ViewModel
         }));
         public CustomCommand CreateKeys => createKeys ?? (createKeys = new CustomCommand(obj => {
             CreateKeysMethod();
-            TestMethod();
         }));
 
         private void CreateKeysMethod() {
@@ -106,7 +107,6 @@ namespace EncryptionApp.ViewModel
             FirstKeySequence = keys[0];
             SecondKeySequence = keys[1];
         }
-
         public string CurrentFileName {
             get => currentFileName;
             set {
@@ -142,7 +142,6 @@ namespace EncryptionApp.ViewModel
                 OnPropertyChanged();
             }
         }
-
         public string CurrentEncryptionMethod {
             get => currentEncryptionMethod;
             set {
@@ -150,9 +149,6 @@ namespace EncryptionApp.ViewModel
                 OnPropertyChanged();
             }
         }
-
-
-
         public Visibility KeyVisibilities {
             get => keyVisibilities;
             set {
@@ -160,7 +156,6 @@ namespace EncryptionApp.ViewModel
                 OnPropertyChanged();
             }
         }
-
         public double KeyFontSize {
             get => keyFontSize;
             set {
@@ -168,7 +163,6 @@ namespace EncryptionApp.ViewModel
                 OnPropertyChanged();
             }
         }
-
         public string SignaturePhrase {
             get => signaturePhrase;
             set {
