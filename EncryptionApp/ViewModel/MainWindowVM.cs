@@ -20,9 +20,9 @@ namespace EncryptionApp.ViewModel
     class MainWindowVM : INotifyPropertyChanged
     {
         private Encryption currentEncryptor = new SymmetricEncryption();
-        private string firstKeySequenceName = "Ключ (BASE64)";
+        private string firstKeySequenceName = "Ключ (16 байт)";
         private string firstKeySequence = "";
-        private string secondKeySequenceName = "Вектор инициализации (BASE64)";
+        private string secondKeySequenceName = "Вектор инициализации (16 байт)";
         private string secondKeySequence = "";
         private string currentFilePath = "";
         private string currentFileName = "Не выбран";
@@ -39,12 +39,12 @@ namespace EncryptionApp.ViewModel
         private CustomCommand signFile;
         private CustomCommand checkFile;
         private CustomCommand verifySignatures;
+        private CustomCommand changeSignatureInterfaceVisibility;
         private string signaturePhrase = "";
+        private Visibility signatureInterfaceVisibility = Visibility.Collapsed;
         public MainWindowVM() {
             CreateKeysMethod();
-            byte[] bytes = new byte[8];
-            new Random().NextBytes(bytes);
-            SignaturePhrase = Convert.ToBase64String(bytes);
+            SignaturePhrase = "Someone";
         }
         private void SetMetaInfo(string firstKeySequenceName, string secondKeySequenceName, string currentEncryptionMethod, Visibility keyVisibilities, double keyFontSize) {
             this.FirstKeySequenceName = firstKeySequenceName;
@@ -70,7 +70,7 @@ namespace EncryptionApp.ViewModel
         }));
         public CustomCommand SetSymmetricEncryption => setSymmetricEncryption ?? (setSymmetricEncryption = new CustomCommand(obj => {
             currentEncryptor = new SymmetricEncryption();
-            SetMetaInfo("Ключ (BASE64)", "Вектор инициализации (BASE64)", "Симметричный", Visibility.Visible, 20);
+            SetMetaInfo("Ключ (16 байт)", "Вектор инициализации (16 байт)", "Симметричный", Visibility.Visible, 20);
         }));
         public CustomCommand SetHashEncryption => setHashEncryption ?? (setHashEncryption = new CustomCommand(obj => {
             currentEncryptor = new HashEncryption();
@@ -91,7 +91,7 @@ namespace EncryptionApp.ViewModel
             }
         }));
         public CustomCommand OpenFile => openFile ?? (openFile = new CustomCommand(obj => {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
+            OpenFileDialog openFileDialog = new OpenFileDialog() { Filter = "Текстовые файлы (*.txt)|*.txt|Файлы MS Word(*.doc; *.docx)|*.doc; *.docx" };
             // это nullable bool, поэтому значение приходится указывать напрямую
             if (openFileDialog.ShowDialog() == true) {
                 CurrentFileName = openFileDialog.SafeFileName;
@@ -101,7 +101,13 @@ namespace EncryptionApp.ViewModel
         public CustomCommand CreateKeys => createKeys ?? (createKeys = new CustomCommand(obj => {
             CreateKeysMethod();
         }));
-
+        public CustomCommand ChangeSignatureInterfaceVisibility => changeSignatureInterfaceVisibility ?? (changeSignatureInterfaceVisibility = new CustomCommand(obj => { 
+            if (SignatureInterfaceVisibility == Visibility.Visible) {
+                SignatureInterfaceVisibility = Visibility.Collapsed;
+            } else {
+                SignatureInterfaceVisibility = Visibility.Visible;
+            }
+        }));
         private void CreateKeysMethod() {
             string[] keys = currentEncryptor.CreateKeys();
             FirstKeySequence = keys[0];
@@ -167,6 +173,14 @@ namespace EncryptionApp.ViewModel
             get => signaturePhrase;
             set {
                 signaturePhrase = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility SignatureInterfaceVisibility {
+            get => signatureInterfaceVisibility;
+            set {
+                signatureInterfaceVisibility = value;
                 OnPropertyChanged();
             }
         }

@@ -144,7 +144,7 @@
                 <Button
                     Style="{StaticResource BaseButton}"
                     Command="{Binding OpenFile}"
-                    Content="Открыть"/>
+                    Content="Открыть файл"/>
                 <Button
                     Visibility="{Binding KeyVisibilities}"
                     Style="{StaticResource BaseButton}"
@@ -156,12 +156,14 @@
                     Content="Зашифровать"/>
                 <Button
                     Margin="0"
+                    Visibility="{Binding KeyVisibilities}"
                     Style="{StaticResource BaseButton}"
                     Command="{Binding DecryptFile}"
                     Content="Расшифровать"/>
             </StackPanel>
         </Grid>
         <Grid
+            Visibility="{Binding SignatureInterfaceVisibility}"
             Background="{StaticResource PrimaryBackground}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="30"/>
@@ -215,6 +217,11 @@
                     Content="Подписать"
                     Command="{Binding SignFile}"
                     Style="{StaticResource BaseButton}"/>
+            </StackPanel>
+            <StackPanel
+                VerticalAlignment="Bottom"
+                Grid.Column="3"
+                Grid.Row="1">
                 <Button
                     Content="Проверить файл"
                     Command="{Binding CheckFile}"
@@ -222,8 +229,17 @@
                 <Button
                     Content="Сравнить подписи"
                     Command="{Binding VerifySignatures}"
+                    Margin="0"
                     Style="{StaticResource BaseButton}"/>
             </StackPanel>
         </Grid>
+        <Button
+            VerticalAlignment="Center"
+            HorizontalAlignment="Right"
+            Height="50"
+            Width="20"
+            Content="&lt;"
+            Command="{Binding ChangeSignatureInterfaceVisibility}"
+            Style="{StaticResource BaseButton}"/>
     </Grid>
 </Window>

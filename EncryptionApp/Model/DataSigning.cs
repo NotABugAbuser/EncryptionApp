@@ -32,7 +32,7 @@ namespace EncryptionApp.Model
             return encryptedSignature;
         }
         public static void CheckFile(string filePath, string key) {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
+            OpenFileDialog openFileDialog = new OpenFileDialog() { Filter = "Файлы ЭЦП (*.sign)|*.sign"};
             if (openFileDialog.ShowDialog() == true) {
                 string signaturePath = openFileDialog.FileName;
                 Signature signature = GetSignature(File.ReadAllBytes(signaturePath), key);
@@ -53,7 +53,7 @@ namespace EncryptionApp.Model
         public static void VerifySign(string key) {
             string firstPath = "";
             string secondPath = "";
-            OpenFileDialog openFileDialog = new OpenFileDialog();
+            OpenFileDialog openFileDialog = new OpenFileDialog() { Filter = "Файлы ЭЦП (*.sign)|*.sign" };
             if (openFileDialog.ShowDialog() == true) {
                 firstPath = openFileDialog.FileName;
                 if (openFileDialog.ShowDialog() == true) {
