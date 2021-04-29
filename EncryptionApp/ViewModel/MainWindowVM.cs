@@ -38,7 +38,7 @@ namespace EncryptionApp.ViewModel
         private CustomCommand setHashEncryption;
         private CustomCommand signFile;
         private CustomCommand checkFile;
-        private CustomCommand compareSignatures;
+        private CustomCommand verifySignatures;
         private string signaturePhrase = "";
         public MainWindowVM() {
             CreateKeysMethod();
@@ -52,22 +52,11 @@ namespace EncryptionApp.ViewModel
         }
         public CustomCommand SignFile => signFile ?? (signFile = new CustomCommand(obj => {
             byte[] data = File.ReadAllBytes(currentFilePath);
-            data = DataSigning.SignData(data, "Eugene");
+            data = DataSigning.SignData(data, SignaturePhrase, FirstKeySequence);
             File.WriteAllBytes(currentFilePath + ".sign", data);
         }));
-        public CustomCommand CompareSignature => compareSignatures ?? (compareSignatures = new CustomCommand(obj => {
-            string firstPath = "";
-            string secondPath = "";
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            if (openFileDialog.ShowDialog() == true) {
-                firstPath = openFileDialog.FileName;
-                if(openFileDialog.ShowDialog() == true) {
-                    secondPath = openFileDialog.FileName;
-                    Debug.WriteLine(firstPath);
-                    Debug.WriteLine(secondPath);
-
-                }
-            }
+        public CustomCommand VerifySignatures => verifySignatures ?? (verifySignatures = new CustomCommand(obj => {
+            DataSigning.VerifySign(FirstKeySequence);
         }));
         public CustomCommand SetAsymmetricEncryption => setAsymmetricEncryption ?? (setAsymmetricEncryption = new CustomCommand(obj => {
             currentEncryptor = new AsymmetricEncryption();

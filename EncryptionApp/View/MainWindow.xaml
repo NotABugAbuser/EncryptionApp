@@ -194,13 +194,13 @@
                 <TextBox
                     Height="40"
                     Text="{Binding SignaturePhrase, UpdateSourceTrigger=PropertyChanged}"
-                    Style="{StaticResource KeyText}"/>
+                    Style="{StaticResource KeyText}" TextChanged="TextBox_TextChanged"/>
                 <TextBlock
                     Style="{StaticResource Header}"
                     Text="Ключ подписи"/>
                 <TextBox
                     Height="40"
-                    Text="{Binding FirstKeySequence}"
+                    Text="{Binding FirstKeySequence, UpdateSourceTrigger=PropertyChanged}"
                     Style="{StaticResource KeyText}"/>
             </StackPanel>
             <StackPanel
@@ -220,7 +220,7 @@
                     Style="{StaticResource BaseButton}"/>
                 <Button
                     Content="Сравнить подписи"
-                    Command="{Binding CompareSignature}"
+                    Command="{Binding VerifySignatures}"
                     Style="{StaticResource BaseButton}"/>
             </StackPanel>
         </Grid>

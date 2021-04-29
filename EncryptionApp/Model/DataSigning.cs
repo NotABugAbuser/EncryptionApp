@@ -1,16 +1,18 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace EncryptionApp.Model
 {
     class DataSigning
     {
-        public static byte[] SignData(byte[] data, string signaturePhrase, byte[] key = null) {
+        public static byte[] SignData(byte[] data, string signaturePhrase, string key = "uDxCCkipuqM03WhfkLDgzw==") {
             byte[] signaturePhraseBlob = ToByteArray<string>(signaturePhrase);
             HashEncryption md5Encryptor = new HashEncryption();
             byte[] hashedData = md5Encryptor.Encrypt(data);
@@ -26,13 +28,34 @@ namespace EncryptionApp.Model
             signature.SignedData = resultHash.ToArray();
             signature.Length = hashedSignaturePhrase.Length;
             SymmetricEncryption aes128Encryptor = new SymmetricEncryption();
-            byte[] encryptedSignature = aes128Encryptor.Encrypt(ToByteArray(signature), "uDxCCkipuqM03WhfkLDgzw==", "uDxCCkipuqM03WhfkLDgzw==");
+            byte[] encryptedSignature = aes128Encryptor.Encrypt(ToByteArray(signature), key, key);
             return encryptedSignature;
         }
-        public void VerifySign(byte[] originalData, byte[] fakeData) {
-
+        public static void VerifySign(string key) {
+            string firstPath = "";
+            string secondPath = "";
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true) {
+                firstPath = openFileDialog.FileName;
+                if (openFileDialog.ShowDialog() == true) {
+                    secondPath = openFileDialog.FileName;
+                    Signature sign1 = DataSigning.GetSignature(File.ReadAllBytes(firstPath), key);
+                    Signature sign2 = DataSigning.GetSignature(File.ReadAllBytes(secondPath), key);
+                    bool isEqual = true;
+                    for (int i = 0; i < sign1.Length; i++) {
+                        isEqual = sign1.SignedData[sign1.Length - 1 - i] == sign2.SignedData[sign2.Length - 1 - i];
+                        if (!isEqual) {
+                            MessageBox.Show("Подпись недействительна");
+                            break;
+                        }
+                    }
+                    if (isEqual) {
+                        MessageBox.Show("Подпись действительна");
+                    }
+                }
+            }
         }
-        private Signature GetSignature(byte[] encryptedSignature, string key) {
+        static public Signature GetSignature(byte[] encryptedSignature, string key = "uDxCCkipuqM03WhfkLDgzw==") {
             SymmetricEncryption aes128Encryptor = new SymmetricEncryption();
             Signature signature = FromByteArray<Signature>(aes128Encryptor.Decrypt(encryptedSignature, key, key));
             return signature;
