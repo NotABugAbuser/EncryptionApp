@@ -11,13 +11,15 @@ namespace EncryptionApp.Model
 {
     class HashEncryption : Encryption
     {
+        ///<summary>
+        ///Извлекает байты файла, вычисляет их хеш-сумму и записывает её в lastHash.txt, находящийся в корневой папке
+        ///</summary>
         public override byte[] Encrypt(byte[] data, string key = null, string skey = null) {
             using (MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider()) {
                 string path = Path.GetFullPath("lastHash.txt");
                 byte[] md5Hash = md5.ComputeHash(data);
                 string hexHash = BitConverter.ToString(md5Hash).Replace("-","");
                 File.WriteAllText(path, hexHash);
-                MessageBox.Show("Хеш последнего преобразованного файла сохранен в lastHash");
                 return data;
             }
         }

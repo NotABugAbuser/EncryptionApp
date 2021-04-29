@@ -202,7 +202,7 @@
                     Text="Ключ подписи"/>
                 <TextBox
                     Height="40"
-                    Text="{Binding FirstKeySequence, UpdateSourceTrigger=PropertyChanged}"
+                    Text="{Binding SignatureKey, UpdateSourceTrigger=PropertyChanged}"
                     Style="{StaticResource KeyText}"/>
             </StackPanel>
             <StackPanel
@@ -222,6 +222,10 @@
                 VerticalAlignment="Bottom"
                 Grid.Column="3"
                 Grid.Row="1">
+                <Button
+                    Content="Создать ключ"
+                    Command="{Binding CreateSignatureKey}"
+                    Style="{StaticResource BaseButton}"/>
                 <Button
                     Content="Проверить файл"
                     Command="{Binding CheckFile}"

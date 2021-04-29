@@ -20,15 +20,25 @@ namespace EncryptionApp.Model
     {
 
         RSACryptoServiceProvider rsa = new RSACryptoServiceProvider(2048);
+        ///<summary>
+        ///Преобразует входной текстовый ключ в приватный ключ, который впоследствии передается в 
+        ///RsaCryptoProviderService, производящий шифрование
+        ///</summary>
         public override byte[] Encrypt(byte[] data, string _, string privateKeyInfo) {
             try {
                 rsa = RSAKeys.ImportPrivateKey(privateKeyInfo);
                 data = rsa.Encrypt(data, false);
-            } catch (Exception) {
+            } catch (FormatException) {
                 MessageBox.Show("RSA 2048 не поддерживает шифрование данных такого объема");
+            } catch (NullReferenceException) {
+                rsa = new RSACryptoServiceProvider();
             }
             return data;
         }
+        ///<summary>
+        ///Преобразует входной текстовый ключ в приватный ключ, который впоследствии передается в 
+        ///RsaCryptoProviderService, производящий дешифрование
+        ///</summary>
         public override byte[] Decrypt(byte[] data, string _, string privateKeyInfo) {
             try {
                 rsa = RSAKeys.ImportPrivateKey(privateKeyInfo);

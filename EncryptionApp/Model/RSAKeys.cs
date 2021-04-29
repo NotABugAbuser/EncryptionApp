@@ -9,6 +9,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace EncryptionApp.Model
 {
@@ -21,13 +22,18 @@ namespace EncryptionApp.Model
         /// <param name="pem"></param>
         /// <returns></returns>
         public static RSACryptoServiceProvider ImportPrivateKey(string pem) {
-            PemReader pr = new PemReader(new StringReader(pem));
-            AsymmetricCipherKeyPair KeyPair = (AsymmetricCipherKeyPair)pr.ReadObject();
-            RSAParameters rsaParams = DotNetUtilities.ToRSAParameters((RsaPrivateCrtKeyParameters)KeyPair.Private);
+            try {
+                PemReader pr = new PemReader(new StringReader(pem));
+                AsymmetricCipherKeyPair KeyPair = (AsymmetricCipherKeyPair)pr.ReadObject();
+                RSAParameters rsaParams = DotNetUtilities.ToRSAParameters((RsaPrivateCrtKeyParameters)KeyPair.Private);
 
-            RSACryptoServiceProvider csp = new RSACryptoServiceProvider();// cspParams);
-            csp.ImportParameters(rsaParams);
-            return csp;
+                RSACryptoServiceProvider csp = new RSACryptoServiceProvider();// cspParams);
+                csp.ImportParameters(rsaParams);
+                return csp;
+            } catch(NullReferenceException ex) {
+                MessageBox.Show("Неверный формат ключа");
+                return null;
+            }
         }
 
         /// <summary>

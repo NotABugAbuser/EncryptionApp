@@ -11,6 +11,11 @@ namespace EncryptionApp.Model
 {
     class SymmetricEncryption : Encryption
     {
+        ///<summary>
+        ///Преобразует входные ключи в их битовое представление, которое впоследствии использует для настройки шифратора
+        ///После настройки протоколирует поток шифрования, возвращая результат оного 
+        ///При неправильной длине ключа выдает ошибку
+        ///</summary>
         public override byte[] Encrypt(byte[] data, string key, string iv) {
             try {
                 byte[] keyBlob = Convert.FromBase64String(key);
@@ -35,6 +40,11 @@ namespace EncryptionApp.Model
                 return data;
             }
         }
+        ///<summary>
+        ///Преобразует входные ключи в их битовое представление, которое впоследствии использует для настройки дешифратора.
+        ///После настройки протоколирует поток шифрования, возвращая результат оного.
+        ///При неправильной длине ключа выдает ошибку
+        ///</summary>
         public override byte[] Decrypt(byte[] data, string key, string iv) {
             try {
                 byte[] keyBlob = Convert.FromBase64String(key);

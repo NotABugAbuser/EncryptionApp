@@ -12,7 +12,13 @@ namespace EncryptionApp.Model
 {
     class DataSigning
     {
-        public static byte[] SignData(byte[] data, string signaturePhrase, string key = "uDxCCkipuqM03WhfkLDgzw==") {
+        /// <summary>
+        /// Вычисляет хеш-суммы байтовых представлений файла и текстовой подписи.
+        /// На их основе создает совмещенный хеш.
+        /// Создает экземпляр подписи, в которую записывает совмещенынй хеш и длину байтового представления подписи.
+        /// Возвращает экземпляр подписи, закодированный через упрощенный AES128.
+        /// </summary>
+        public static byte[] SignData(byte[] data, string signaturePhrase, string key) {
             byte[] signaturePhraseBlob = ToByteArray<string>(signaturePhrase);
             HashEncryption md5Encryptor = new HashEncryption();
             byte[] hashedData = md5Encryptor.Encrypt(data);
@@ -31,6 +37,11 @@ namespace EncryptionApp.Model
             byte[] encryptedSignature = aes128Encryptor.Encrypt(ToByteArray(signature), key, key);
             return encryptedSignature;
         }
+        /// <summary>
+        /// Считывает все байты файла подписи.
+        /// Вычленяет из него все байты данных файла и сравнивает с данными оригинального файла.
+        /// При несоответствии хотя бы одного байта выдает ошибку.
+        /// </summary>
         public static void CheckFile(string filePath, string key) {
             OpenFileDialog openFileDialog = new OpenFileDialog() { Filter = "Файлы ЭЦП (*.sign)|*.sign"};
             if (openFileDialog.ShowDialog() == true) {
@@ -50,6 +61,11 @@ namespace EncryptionApp.Model
                 }
             }
         }
+        /// <summary>
+        /// Открывает по отдельности два файла подписи.
+        /// Вычленяет из них последние байты, являющиеся представлением текстовой подписи.
+        /// Сранивает их и при несоответствии хотя бы одного байта выдает ошибку.
+        /// </summary>
         public static void VerifySign(string key) {
             string firstPath = "";
             string secondPath = "";
@@ -74,7 +90,7 @@ namespace EncryptionApp.Model
                 }
             }
         }
-        static public Signature GetSignature(byte[] encryptedSignature, string key = "uDxCCkipuqM03WhfkLDgzw==") {
+        static public Signature GetSignature(byte[] encryptedSignature, string key) {
             SymmetricEncryption aes128Encryptor = new SymmetricEncryption();
             Signature signature = FromByteArray<Signature>(aes128Encryptor.Decrypt(encryptedSignature, key, key));
             return signature;

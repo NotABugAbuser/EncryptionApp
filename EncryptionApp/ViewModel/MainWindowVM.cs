@@ -40,11 +40,16 @@ namespace EncryptionApp.ViewModel
         private CustomCommand checkFile;
         private CustomCommand verifySignatures;
         private CustomCommand changeSignatureInterfaceVisibility;
+        private CustomCommand createSignatureKey;
         private string signaturePhrase = "";
+        private string signatureKey = "";
         private Visibility signatureInterfaceVisibility = Visibility.Collapsed;
         public MainWindowVM() {
             CreateKeysMethod();
             SignaturePhrase = "Someone";
+            byte[] bytes = new byte[16];
+            new Random().NextBytes(bytes);
+            SignatureKey = Convert.ToBase64String(bytes);
         }
         private void SetMetaInfo(string firstKeySequenceName, string secondKeySequenceName, string currentEncryptionMethod, Visibility keyVisibilities, double keyFontSize) {
             this.FirstKeySequenceName = firstKeySequenceName;
@@ -53,16 +58,19 @@ namespace EncryptionApp.ViewModel
             this.KeyVisibilities = keyVisibilities;
             this.KeyFontSize = keyFontSize;
         }
+        ///<summary>
+        ///Считывает все байты файла, подписывает их и записывает в этот же файл.
+        ///</summary>
         public CustomCommand SignFile => signFile ?? (signFile = new CustomCommand(obj => {
             byte[] data = File.ReadAllBytes(currentFilePath);
-            data = DataSigning.SignData(data, SignaturePhrase, FirstKeySequence);
+            data = DataSigning.SignData(data, SignaturePhrase, SignatureKey);
             File.WriteAllBytes(currentFilePath + ".sign", data);
         }));
         public CustomCommand CheckFile => checkFile ?? (checkFile = new CustomCommand(obj => {
-            DataSigning.CheckFile(currentFilePath, FirstKeySequence);
+            DataSigning.CheckFile(currentFilePath, SignatureKey);
         }));
         public CustomCommand VerifySignatures => verifySignatures ?? (verifySignatures = new CustomCommand(obj => {
-            DataSigning.VerifySign(FirstKeySequence);
+            DataSigning.VerifySign(SignatureKey);
         }));
         public CustomCommand SetAsymmetricEncryption => setAsymmetricEncryption ?? (setAsymmetricEncryption = new CustomCommand(obj => {
             currentEncryptor = new AsymmetricEncryption();
@@ -76,6 +84,9 @@ namespace EncryptionApp.ViewModel
             currentEncryptor = new HashEncryption();
             SetMetaInfo("", "", "Необратимый", Visibility.Collapsed, 20);
         }));
+        ///<summary>
+        ///Считывает байты файла, шифрует их текущим шифратором и записывает в этот же файл
+        ///</summary>
         public CustomCommand EncryptFile => encryptFile ?? (encryptFile = new CustomCommand(obj => {
             if (!String.IsNullOrEmpty(currentFilePath)) {
                 byte[] data = File.ReadAllBytes(currentFilePath);
@@ -83,6 +94,9 @@ namespace EncryptionApp.ViewModel
                 File.WriteAllBytes(currentFilePath, data);
             }
         }));
+        ///<summary>
+        ///Считывает байты файла, дешифрует их текущим шифратором и записывает в этот же файл
+        ///</summary>
         public CustomCommand DecryptFile => decryptFile ?? (decryptFile = new CustomCommand(obj => {
             if (!String.IsNullOrEmpty(currentFilePath)) {
                 byte[] data = File.ReadAllBytes(currentFilePath);
@@ -90,6 +104,9 @@ namespace EncryptionApp.ViewModel
                 File.WriteAllBytes(currentFilePath, data);
             }
         }));
+        ///<summary>
+        ///Открывает проводник для выбора одного текстового файла или word-документа, устанавливая его в качестве текущего файла
+        ///</summary>
         public CustomCommand OpenFile => openFile ?? (openFile = new CustomCommand(obj => {
             OpenFileDialog openFileDialog = new OpenFileDialog() { Filter = "Текстовые файлы (*.txt)|*.txt|Файлы MS Word(*.doc; *.docx)|*.doc; *.docx" };
             // это nullable bool, поэтому значение приходится указывать напрямую
@@ -101,12 +118,17 @@ namespace EncryptionApp.ViewModel
         public CustomCommand CreateKeys => createKeys ?? (createKeys = new CustomCommand(obj => {
             CreateKeysMethod();
         }));
-        public CustomCommand ChangeSignatureInterfaceVisibility => changeSignatureInterfaceVisibility ?? (changeSignatureInterfaceVisibility = new CustomCommand(obj => { 
+        public CustomCommand ChangeSignatureInterfaceVisibility => changeSignatureInterfaceVisibility ?? (changeSignatureInterfaceVisibility = new CustomCommand(obj => {
             if (SignatureInterfaceVisibility == Visibility.Visible) {
                 SignatureInterfaceVisibility = Visibility.Collapsed;
             } else {
                 SignatureInterfaceVisibility = Visibility.Visible;
             }
+        }));
+        public CustomCommand CreateSignatureKey => createSignatureKey ?? (createSignatureKey = new CustomCommand(obj => {
+            byte[] bytes = new byte[16];
+            new Random().NextBytes(bytes);
+            SignatureKey = Convert.ToBase64String(bytes);
         }));
         private void CreateKeysMethod() {
             string[] keys = currentEncryptor.CreateKeys();
@@ -181,6 +203,14 @@ namespace EncryptionApp.ViewModel
             get => signatureInterfaceVisibility;
             set {
                 signatureInterfaceVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string SignatureKey {
+            get => signatureKey;
+            set {
+                signatureKey = value;
                 OnPropertyChanged();
             }
         }
